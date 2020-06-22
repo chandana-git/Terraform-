@@ -1,0 +1,37 @@
+To create Ec2 instance
+
+Create a user in Iam with a group which has permission of Administrator access or EC2FullAccess. Save the access key ID and Secret access key
+ssh into ec2 instance-> ssh -i <pem key> ec2@ipaddress
+
+Download terraform
+yum -y update
+ wget https://releases.hashicorp.com/terraform/0.12.26/terraform_0.12.26_linux_amd64.zip
+unzip terraform_0.12.26_linux_amd64.zip
+
+Set the path for terraform
+terraform version
+
+[centos@ip-10-0-1-83 ~]$ echo $"export PATH=\$PATH:$(pwd)" >> ~/.bash_profile
+[centos@ip-10-0-1-83 ~]$ source ~/.bash_profile
+
+main.tf
+
+provider "aws" {
+  access_key = "ACCESS_KEY_HERE" //add the  access key id
+  secret_key = "SECRET_KEY_HERE" //add the secret access key
+  region     = "us-east-1"
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-2757f631"
+  instance_type = "t2.micro"
+}
+
+terraform init
+terraform plan
+terraform apply
+
+Then the EC2 instance will be created
+
+To terminate the instance
+ terraform destroy
